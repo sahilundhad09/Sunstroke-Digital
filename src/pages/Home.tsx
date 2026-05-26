@@ -130,7 +130,7 @@ export default function Home() {
     <div className="flex flex-col space-y-24 pb-20 overflow-hidden text-left">
       
       {/* 2. Hero Section */}
-      <section className="relative pt-24 pb-16 md:pt-36 md:pb-28 border-b border-border/10">
+      <section className="relative pt-16 pb-12 md:pt-20 md:pb-16 border-b border-border/10">
         {/* Floating animated gradient backdrops */}
         <div className="absolute top-1/4 left-1/2 -z-10 h-[320px] w-[600px] -translate-x-1/2 rounded-full bg-violet-600/10 blur-[130px] animate-pulse duration-[8000ms]" />
         <div className="absolute top-1/3 left-1/3 -z-10 h-[280px] w-[450px] rounded-full bg-cyan-500/10 blur-[110px] animate-pulse duration-[6000ms]" />
@@ -139,33 +139,44 @@ export default function Home() {
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
-          className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center space-y-8"
+          className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center space-y-5"
         >
+          <div className="flex justify-center pb-1">
+            <div className="relative">
+              <div className="absolute -inset-2.5 rounded-[2rem] bg-gradient-to-r from-violet-600 to-cyan-500 opacity-70 blur-lg animate-pulse duration-[4000ms]" />
+              <img
+                src="/sunstroke_logo.jpg"
+                alt="Sunstroke Digital Logo"
+                className="relative h-40 w-40 rounded-[2rem] object-cover border border-[#2a2a2a] shadow-2xl"
+              />
+            </div>
+          </div>
+
           <Badge className="bg-violet-500/10 text-violet-400 border border-violet-500/20 px-3 py-1 hover:bg-violet-500/20 mx-auto select-none">
             <Sparkles className="mr-1.5 h-3.5 w-3.5 inline text-cyan-400" />
             Empowering Developers & Creators to Launch Instantly
           </Badge>
           
-          <h1 className="mx-auto max-w-4xl text-4xl font-extrabold tracking-tight text-foreground sm:text-6xl md:text-7xl leading-tight sm:leading-none">
+          <h1 className="mx-auto max-w-4xl text-3xl font-extrabold tracking-tight text-foreground sm:text-5xl md:text-6xl leading-tight sm:leading-none">
             Tools & Templates Built for the{' '}
             <span className="bg-gradient-to-r from-violet-400 to-cyan-400 bg-clip-text text-transparent">
               Modern Professional
             </span>
           </h1>
           
-          <p className="mx-auto max-w-2xl text-base text-muted-foreground sm:text-lg leading-relaxed">
+          <p className="mx-auto max-w-2xl text-sm text-muted-foreground sm:text-base leading-relaxed">
             High-converting SaaS templates, ATS-friendly resume codekits, and custom AI prompt bundles engineered to automate operations and drive commercial results.
           </p>
 
-          <div className="flex flex-col sm:flex-row justify-center items-center gap-4 pt-4">
+          <div className="flex flex-col sm:flex-row justify-center items-center gap-4 pt-2">
             <Link to="/products" onClick={() => logClick('hero-cta-browse')}>
-              <Button size="lg" className="w-full sm:w-auto bg-violet-600 hover:bg-violet-700 text-white font-semibold shadow-lg shadow-violet-500/20 px-8 py-6 rounded-xl text-sm">
+              <Button size="lg" className="w-full sm:w-auto bg-violet-600 hover:bg-violet-700 text-white font-semibold shadow-lg shadow-violet-500/20 px-8 py-5 rounded-xl text-sm">
                 Browse Products
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </Link>
             <Link to="/free" onClick={() => logClick('hero-cta-free')}>
-              <Button size="lg" variant="outline" className="w-full sm:w-auto border border-violet-600 text-violet-400 hover:bg-violet-600/10 font-semibold px-8 py-6 rounded-xl text-sm">
+              <Button size="lg" variant="outline" className="w-full sm:w-auto border border-violet-600 text-violet-400 hover:bg-violet-600/10 font-semibold px-8 py-5 rounded-xl text-sm">
                 Download Free Resource
               </Button>
             </Link>
