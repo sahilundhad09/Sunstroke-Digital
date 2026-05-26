@@ -1,0 +1,88 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #f4f4f5;
+    --card: #111111;
+    --card-foreground: #f4f4f5;
+    --popover: #111111;
+    --popover-foreground: #f4f4f5;
+    --primary: #7c3aed;
+    --primary-foreground: #f4f4f5;
+    --secondary: #1a1a1a;
+    --secondary-foreground: #a1a1aa;
+    --muted: #111111;
+    --muted-foreground: #a1a1aa;
+    --accent: #7c3aed;
+    --accent-foreground: #f4f4f5;
+    --destructive: #ef4444;
+    --border: #2a2a2a;
+    --input: #1a1a1a;
+    --ring: #7c3aed;
+    --radius: 0.75rem;
+    
+    --font-sans: 'Inter', sans-serif;
+  }
+  
+  .dark {
+    --background: #0a0a0a;
+    --foreground: #f4f4f5;
+    --card: #111111;
+    --card-foreground: #f4f4f5;
+    --popover: #111111;
+    --popover-foreground: #f4f4f5;
+    --primary: #7c3aed;
+    --primary-foreground: #f4f4f5;
+    --secondary: #1a1a1a;
+    --secondary-foreground: #a1a1aa;
+    --muted: #111111;
+    --muted-foreground: #a1a1aa;
+    --accent: #7c3aed;
+    --accent-foreground: #f4f4f5;
+    --destructive: #ef4444;
+    --border: #2a2a2a;
+    --input: #1a1a1a;
+    --ring: #7c3aed;
+    
+    --font-sans: 'Inter', sans-serif;
+  }
+
+  * {
+    @apply border-border;
+  }
+  
+  body {
+    @apply bg-background text-foreground antialiased font-sans;
+    background-color: #0a0a0a;
+  }
+  
+  html {
+    font-family: 'Inter', sans-serif;
+  }
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 20s linear infinite;
+}
+
+/* Custom premium glow effects */
+.glow-card-gradient {
+  background: radial-gradient(800px circle at var(--x, 0px) var(--y, 0px), rgba(124, 58, 237, 0.1) 0%, transparent 50%);
+}
+
+.glow-card-cyan-gradient {
+  background: radial-gradient(800px circle at var(--x, 0px) var(--y, 0px), rgba(6, 182, 212, 0.1) 0%, transparent 50%);
+}
