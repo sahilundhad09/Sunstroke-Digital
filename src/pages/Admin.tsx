@@ -13,9 +13,9 @@ import type { Product, Affiliate, BlogPost, Lead, AnalyticsEvent } from '../type
 
 export default function Admin() {
   // Auth state
+  const [email, setEmail] = useState('admin@sunstrokedigital.com');
   const [password, setPassword] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [authError, setAuthError] = useState(false);
 
   // Tabs
   const [activeTab, setActiveTab] = useState<'stats' | 'products' | 'affiliates' | 'blog' | 'leads'>('stats');
@@ -74,11 +74,25 @@ export default function Admin() {
   const [notif, setNotif] = useState<{ type: 'success' | 'error', text: string } | null>(null);
 
   useEffect(() => {
-    const authStatus = sessionStorage.getItem('admin_authenticated');
-    if (authStatus === 'true') {
-      setIsAuthenticated(true);
-      fetchAllData();
-    }
+    // 1. Check current session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) {
+        setIsAuthenticated(true);
+        fetchAllData();
+      }
+    });
+
+    // 2. Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session) {
+        setIsAuthenticated(true);
+        fetchAllData();
+      } else {
+        setIsAuthenticated(false);
+      }
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
   const triggerNotification = (text: string, type: 'success' | 'error' = 'success') => {
@@ -86,21 +100,54 @@ export default function Admin() {
     setTimeout(() => setNotif(null), 3500);
   };
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (password === 'admin') {
+    
+    // Attempt sign in
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password
+    });
+
+    if (!error) {
       setIsAuthenticated(true);
-      setAuthError(false);
-      sessionStorage.setItem('admin_authenticated', 'true');
       fetchAllData();
+      triggerNotification('Authenticated successfully.');
     } else {
-      setAuthError(true);
+      // If user not found, try to auto-create (first-time setup helper)
+      if (error.message.toLowerCase().includes('invalid login credentials') || error.message.toLowerCase().includes('user not found')) {
+        const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
+          email,
+          password
+        });
+        
+        if (!signUpError) {
+          if (signUpData.session) {
+            setIsAuthenticated(true);
+            fetchAllData();
+            triggerNotification('Account setup and authenticated.');
+          } else {
+            triggerNotification('Account registered! Check email or console.', 'success');
+            console.log('Admin account created in Supabase Auth. If you get a confirmation error, disable "Confirm email" under Authentication -> Providers -> Email in your Supabase console.');
+          }
+        } else {
+          // If signup fails because user exists, it means they entered the wrong password!
+          if (signUpError.message.toLowerCase().includes('user already registered') || signUpError.message.toLowerCase().includes('already exists')) {
+            triggerNotification('Incorrect password for this email.', 'error');
+          } else {
+            triggerNotification(signUpError.message, 'error');
+          }
+        }
+      } else {
+        triggerNotification(error.message, 'error');
+      }
     }
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
     setIsAuthenticated(false);
-    sessionStorage.removeItem('admin_authenticated');
+    triggerNotification('Logged out successfully.');
   };
 
   const fetchAllData = async () => {
@@ -429,32 +476,46 @@ export default function Admin() {
   if (!isAuthenticated) {
     return (
       <div className="mx-auto max-w-md px-4 py-24 text-left">
-        <GlowCard className="bg-card/25 border border-border/80 p-8" glowColor="rgba(147, 51, 234, 0.18)">
+        <GlowCard className="bg-[#111111] border border-[#2a2a2a] p-8" glowColor="rgba(124, 58, 237, 0.18)">
           <div className="flex flex-col items-center justify-center mb-6">
-            <div className="p-3 bg-purple-500/10 rounded-2xl border border-purple-500/20 mb-3">
-              <Lock className="h-6 w-6 text-purple-400" />
+            <div className="p-3 bg-violet-500/10 rounded-2xl border border-violet-500/20 mb-3">
+              <Lock className="h-6 w-6 text-violet-400" />
             </div>
-            <h2 className="text-xl font-bold text-foreground text-center">Admin Lock</h2>
-            <p className="text-2xs text-muted-foreground text-center mt-1">Please enter the dashboard key to proceed.</p>
+            <h2 className="text-xl font-bold text-foreground text-center">Admin Console</h2>
+            <p className="text-2xs text-muted-foreground text-center mt-1">Authenticate using your Supabase Auth credentials.</p>
           </div>
 
           <form onSubmit={handleLogin} className="space-y-4">
             <div className="space-y-2">
-              <label className="text-xs font-semibold text-muted-foreground">Access Password</label>
+              <label className="text-xs font-semibold text-muted-foreground">Admin Email</label>
+              <input
+                type="email"
+                required
+                placeholder="admin@sunstrokedigital.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full bg-[#1a1a1a] border border-[#2a2a2a] rounded-lg px-4 py-2.5 text-xs text-foreground focus:outline-none focus:border-violet-500/50"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-xs font-semibold text-muted-foreground">Password</label>
               <input
                 type="password"
                 required
-                placeholder="default key: admin"
+                placeholder="Enter password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full bg-muted border border-border/80 rounded-lg px-4 py-2.5 text-xs text-foreground focus:outline-none focus:border-purple-500/50"
+                className="w-full bg-[#1a1a1a] border border-[#2a2a2a] rounded-lg px-4 py-2.5 text-xs text-foreground focus:outline-none focus:border-violet-500/50"
               />
             </div>
-            {authError && (
-              <span className="text-red-400 text-2xs block">Incorrect key. Try again.</span>
-            )}
-            <Button type="submit" className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2.5">
-              Unlock Dashboard
+
+            <div className="text-3xs text-muted-foreground leading-normal p-2.5 bg-[#1a1a1a]/60 border border-[#2a2a2a]/60 rounded-lg">
+              <span className="font-semibold text-violet-400">First-time login?</span> Enter your desired admin email and password. The system will automatically register your account in your Supabase Auth backend.
+            </div>
+
+            <Button type="submit" className="w-full bg-violet-600 hover:bg-violet-700 text-white font-semibold py-2.5 rounded-xl">
+              Authenticate
             </Button>
           </form>
         </GlowCard>
@@ -470,7 +531,7 @@ export default function Admin() {
         <div className={`fixed top-6 right-6 z-50 flex items-center space-x-2 px-4 py-3 rounded-lg border text-xs shadow-xl transition-all duration-300 ${
           notif.type === 'error' ? 'bg-red-950/80 border-red-500/30 text-red-400' : 'bg-green-950/80 border-green-500/30 text-green-400'
         }`}>
-          <Check className="h-4 w-4" />
+          {notif.type === 'error' ? <X className="h-4 w-4" /> : <Check className="h-4 w-4" />}
           <span>{notif.text}</span>
         </div>
       )}

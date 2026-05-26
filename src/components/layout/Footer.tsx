@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import { Terminal } from 'lucide-react';
 import { useAnalytics } from '../../hooks/useAnalytics';
 
 export default function Footer() {
@@ -11,13 +10,13 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           {/* Section 1: Logo & Tagline */}
           <div className="flex flex-col space-y-4">
-            <Link 
-              to="/" 
+            <Link
+              to="/"
               className="flex items-center space-x-2 text-lg font-bold"
               onClick={() => logClick('footer-logo')}
             >
-              <Terminal className="h-5 w-5 text-purple-500" />
-              <span className="bg-gradient-to-r from-purple-400 to-indigo-400 bg-clip-text text-transparent">Sunstroke Digital</span>
+              <img src="/sunstroke_logo.jpg" alt="Sunstroke Digital Logo" className="h-6 w-6 rounded-md object-cover border border-[#2a2a2a]" />
+              <span className="bg-gradient-to-r from-violet-400 to-cyan-400 bg-clip-text text-transparent">Sunstroke Digital</span>
             </Link>
             <p className="text-xs text-muted-foreground leading-relaxed">
               High-converting digital assets, production-ready boilerplates, and developer templates built for creators.
@@ -25,10 +24,10 @@ export default function Footer() {
             {/* Social Icons */}
             <div className="flex space-x-4">
               {/* Pinterest */}
-              <a 
-                href="https://pinterest.com" 
-                target="_blank" 
-                rel="noreferrer" 
+              <a
+                href="https://in.pinterest.com/sahilundhad09/"
+                target="_blank"
+                rel="noreferrer"
                 className="text-muted-foreground hover:text-red-500 transition-colors"
                 title="Pinterest"
                 onClick={() => logClick('footer-social-pinterest')}
@@ -38,10 +37,10 @@ export default function Footer() {
                 </svg>
               </a>
               {/* Instagram */}
-              <a 
-                href="https://instagram.com" 
-                target="_blank" 
-                rel="noreferrer" 
+              <a
+                href="https://www.instagram.com/sunstroke09/"
+                target="_blank"
+                rel="noreferrer"
                 className="text-muted-foreground hover:text-pink-500 transition-colors"
                 title="Instagram"
                 onClick={() => logClick('footer-social-instagram')}
@@ -53,10 +52,10 @@ export default function Footer() {
                 </svg>
               </a>
               {/* Reddit */}
-              <a 
-                href="https://reddit.com" 
-                target="_blank" 
-                rel="noreferrer" 
+              <a
+                href="https://www.reddit.com/user/Adventurous-Law4162/"
+                target="_blank"
+                rel="noreferrer"
                 className="text-muted-foreground hover:text-orange-500 transition-colors"
                 title="Reddit"
                 onClick={() => logClick('footer-social-reddit')}
@@ -66,10 +65,10 @@ export default function Footer() {
                 </svg>
               </a>
               {/* GitHub */}
-              <a 
-                href="https://github.com" 
-                target="_blank" 
-                rel="noreferrer" 
+              <a
+                href="https://github.com/sahilundhad09"
+                target="_blank"
+                rel="noreferrer"
                 className="text-muted-foreground hover:text-white transition-colors"
                 title="GitHub"
                 onClick={() => logClick('footer-social-github')}
@@ -86,17 +85,17 @@ export default function Footer() {
             <h4 className="text-sm font-semibold text-foreground mb-4 font-heading">Products</h4>
             <ul className="space-y-2 text-xs">
               <li>
-                <Link to="/products" className="text-muted-foreground hover:text-purple-400 transition-colors" onClick={() => logClick('footer-link-products-all')}>
+                <Link to="/products" className="text-muted-foreground hover:text-violet-400 transition-colors" onClick={() => logClick('footer-link-products-all')}>
                   All Products
                 </Link>
               </li>
               <li>
-                <Link to="/products?category=ai-tools" className="text-muted-foreground hover:text-purple-400 transition-colors" onClick={() => logClick('footer-link-products-ai')}>
+                <Link to="/products?category=ai-tools" className="text-muted-foreground hover:text-violet-400 transition-colors" onClick={() => logClick('footer-link-products-ai')}>
                   AI Prompt Kits
                 </Link>
               </li>
               <li>
-                <Link to="/products?category=resume" className="text-muted-foreground hover:text-purple-400 transition-colors" onClick={() => logClick('footer-link-products-resume')}>
+                <Link to="/products?category=resume" className="text-muted-foreground hover:text-violet-400 transition-colors" onClick={() => logClick('footer-link-products-resume')}>
                   Resume Templates
                 </Link>
               </li>
@@ -108,17 +107,17 @@ export default function Footer() {
             <h4 className="text-sm font-semibold text-foreground mb-4 font-heading">Resources</h4>
             <ul className="space-y-2 text-xs">
               <li>
-                <Link to="/blog" className="text-muted-foreground hover:text-purple-400 transition-colors" onClick={() => logClick('footer-link-blog')}>
+                <Link to="/blog" className="text-muted-foreground hover:text-violet-400 transition-colors" onClick={() => logClick('footer-link-blog')}>
                   Technical Blog
                 </Link>
               </li>
               <li>
-                <Link to="/free" className="text-muted-foreground hover:text-purple-400 transition-colors" onClick={() => logClick('footer-link-freebie')}>
+                <Link to="/free" className="text-muted-foreground hover:text-violet-400 transition-colors" onClick={() => logClick('footer-link-freebie')}>
                   Free Resources & Prompts
                 </Link>
               </li>
               <li>
-                <Link to="/about" className="text-muted-foreground hover:text-purple-400 transition-colors" onClick={() => logClick('footer-link-about')}>
+                <Link to="/about" className="text-muted-foreground hover:text-violet-400 transition-colors" onClick={() => logClick('footer-link-about')}>
                   About the Developer
                 </Link>
               </li>
@@ -130,12 +129,12 @@ export default function Footer() {
             <h4 className="text-sm font-semibold text-foreground mb-4 font-heading">Connect</h4>
             <ul className="space-y-2 text-xs">
               <li>
-                <Link to="/affiliates" className="text-muted-foreground hover:text-purple-400 transition-colors" onClick={() => logClick('footer-link-affiliates')}>
+                <Link to="/affiliates" className="text-muted-foreground hover:text-violet-400 transition-colors" onClick={() => logClick('footer-link-affiliates')}>
                   Recommendations & Tools
                 </Link>
               </li>
               <li>
-                <Link to="/admin" className="text-muted-foreground hover:text-purple-400 transition-colors" onClick={() => logClick('footer-link-admin')}>
+                <Link to="/admin" className="text-muted-foreground hover:text-violet-400 transition-colors" onClick={() => logClick('footer-link-admin')}>
                   Admin Dashboard
                 </Link>
               </li>

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
-import { Menu, X, Terminal, ArrowRight } from 'lucide-react';
+import { Menu, X, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAnalytics } from '../../hooks/useAnalytics';
 
@@ -23,11 +23,11 @@ export default function Navbar() {
           <div className="flex items-center">
             <Link 
               to="/" 
-              className="flex items-center space-x-2 text-xl font-bold tracking-tight text-foreground hover:opacity-90 transition-opacity"
+              className="flex items-center space-x-2.5 text-xl font-bold tracking-tight text-foreground hover:opacity-90 transition-opacity"
               onClick={() => logClick('nav-logo')}
             >
-              <Terminal className="h-6 w-6 text-purple-500" />
-              <span className="bg-gradient-to-r from-purple-400 to-indigo-400 bg-clip-text text-transparent">Sunstroke Digital</span>
+              <img src="/sunstroke_logo.jpg" alt="Sunstroke Digital Logo" className="h-8 w-8 rounded-lg object-cover border border-[#2a2a2a]" />
+              <span className="bg-gradient-to-r from-violet-400 to-cyan-400 bg-clip-text text-transparent">Sunstroke Digital</span>
             </Link>
           </div>
 
@@ -38,8 +38,8 @@ export default function Navbar() {
                 key={link.path}
                 to={link.path}
                 className={({ isActive }) =>
-                  `text-sm font-medium transition-colors hover:text-purple-400 ${
-                    isActive ? 'text-purple-400 font-semibold' : 'text-muted-foreground'
+                  `text-sm font-medium transition-colors hover:text-violet-400 ${
+                    isActive ? 'text-violet-400 font-semibold' : 'text-muted-foreground'
                   }`
                 }
                 onClick={() => logClick(`nav-link-${link.name.toLowerCase()}`)}
@@ -54,8 +54,8 @@ export default function Navbar() {
             <NavLink
               to="/admin"
               className={({ isActive }) =>
-                `text-xs font-semibold px-2.5 py-1 rounded border border-border/60 hover:bg-muted transition-colors ${
-                  isActive ? 'bg-muted text-purple-400 border-purple-500/50' : 'text-muted-foreground'
+                `text-xs font-semibold px-2.5 py-1 rounded border border-[#2a2a2a] hover:bg-muted transition-colors ${
+                  isActive ? 'bg-[#1a1a1a] text-violet-400 border-violet-500/50' : 'text-muted-foreground'
                 }`
               }
               onClick={() => logClick('nav-link-admin')}
@@ -63,7 +63,7 @@ export default function Navbar() {
               Admin
             </NavLink>
             <Link to="/free" onClick={() => logClick('nav-cta-freebie')}>
-              <Button size="sm" className="bg-purple-600 hover:bg-purple-700 text-white font-medium group">
+              <Button size="sm" className="bg-violet-600 hover:bg-violet-700 text-white rounded-xl font-medium group">
                 <span>Get Free Resource</span>
                 <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Button>
@@ -90,8 +90,8 @@ export default function Navbar() {
               key={link.path}
               to={link.path}
               className={({ isActive }) =>
-                `block px-3 py-2 rounded-md text-base font-medium transition-colors hover:bg-muted hover:text-purple-400 ${
-                  isActive ? 'text-purple-400 bg-muted/50' : 'text-muted-foreground'
+                `block px-3 py-2 rounded-md text-base font-medium transition-colors hover:bg-muted hover:text-violet-400 ${
+                  isActive ? 'text-violet-400 bg-muted/50' : 'text-muted-foreground'
                 }`
               }
               onClick={() => {
@@ -105,7 +105,7 @@ export default function Navbar() {
           <div className="border-t border-border/40 my-3 pt-3 flex flex-col space-y-3 px-3">
             <NavLink
               to="/admin"
-              className="text-sm font-medium text-muted-foreground hover:text-purple-400"
+              className="text-sm font-medium text-muted-foreground hover:text-violet-400"
               onClick={() => {
                 setIsOpen(false);
                 logClick('nav-mobile-link-admin');
@@ -121,7 +121,7 @@ export default function Navbar() {
               }}
               className="w-full"
             >
-              <Button className="w-full bg-purple-600 hover:bg-purple-700 text-white justify-center">
+              <Button className="w-full bg-violet-600 hover:bg-violet-700 text-white justify-center rounded-xl">
                 <span>Get Free Resource</span>
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
