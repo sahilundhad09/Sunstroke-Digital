@@ -48,7 +48,7 @@ export default function Admin() {
   const [prodPrice, setProdPrice] = useState('29');
   const [prodCheckoutUrl, setProdCheckoutUrl] = useState('');
   const [prodCoverUrl, setProdCoverUrl] = useState('');
-  const [prodCategory, setProdCategory] = useState('ai-tools');
+  const [prodCategory, setProdCategory] = useState('other');
   const [prodTags, setProdTags] = useState('');
   const [prodFeatured, setProdFeatured] = useState(true);
   const [prodPublished, setProdPublished] = useState(true);
@@ -310,7 +310,7 @@ export default function Admin() {
     setProdPrice('29');
     setProdCheckoutUrl('');
     setProdCoverUrl('');
-    setProdCategory('ai-tools');
+    setProdCategory('other');
     setProdTags('');
     setProdFeatured(true);
     setProdPublished(true);
@@ -782,15 +782,13 @@ export default function Admin() {
                 </div>
                 <div className="space-y-1.5">
                   <label className="font-semibold text-muted-foreground">Category</label>
-                  <select
+                  <input
+                    type="text"
+                    placeholder="e.g. Templates, Boilerplates, Ebooks"
                     value={prodCategory}
                     onChange={(e) => setProdCategory(e.target.value)}
-                    className="w-full bg-muted border border-border/80 rounded-lg px-3 py-2 text-foreground focus:outline-none"
-                  >
-                    <option value="ai-tools">AI Tools</option>
-                    <option value="resume">Resume & Portfolio</option>
-                    <option value="other">Other</option>
-                  </select>
+                    className="w-full bg-muted border border-[#2a2a2a] rounded-lg px-3 py-2 text-foreground focus:outline-none focus:border-purple-500/50"
+                  />
                 </div>
                 <div className="md:col-span-2 space-y-1.5">
                   <label className="font-semibold text-muted-foreground">Tags / Features (Comma separated)</label>

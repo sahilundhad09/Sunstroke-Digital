@@ -7,6 +7,8 @@ import { GlowCard } from '../components/ui/GlowCard';
 import { Badge } from '@/components/ui/badge';
 import { useAnalytics } from '../hooks/useAnalytics';
 import { useBlogPosts } from '../hooks/useBlogPosts';
+import SEO from '../components/common/SEO';
+import { BlogGridSkeleton } from '../components/common/LoadingSkeleton';
 
 export default function Blog() {
   const { logClick } = useAnalytics();
@@ -31,6 +33,10 @@ export default function Blog() {
       transition={{ duration: 0.3 }}
       className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 text-left"
     >
+      <SEO 
+        title="Insights & Guides - Sunstroke Digital Blog" 
+        description="Technical guides, optimization tips, and digital product creation insights."
+      />
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
         <div className="max-w-2xl">
           <h1 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-5xl">
@@ -55,10 +61,12 @@ export default function Blog() {
       </div>
 
       {loading ? (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {[...Array(3)].map((_, i) => (
-            <div key={i} className="h-80 animate-pulse rounded-2xl border border-[#2a2a2a] bg-card/25" />
-          ))}
+        <BlogGridSkeleton count={6} />
+      ) : filteredPosts.length === 0 ? (
+        <div className="text-center py-20 border border-dashed border-[#2a2a2a] rounded-2xl bg-[#111111]/30">
+          <Terminal className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
+          <h3 className="text-lg font-bold text-foreground">No Articles Found</h3>
+          <p className="text-sm text-muted-foreground mt-2">No results matched your search query. Try another keyword!</p>
         </div>
       ) : (
         /* Grid of Blog Posts */
@@ -79,6 +87,7 @@ export default function Blog() {
                       src={post.cover_image_url || ''} 
                       alt={post.title} 
                       className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
+                      loading="lazy"
                     />
                   </div>
 
@@ -121,15 +130,6 @@ export default function Blog() {
               </GlowCard>
             </motion.div>
           ))}
-        </div>
-      )}
-
-      {/* No articles state */}
-      {!loading && filteredPosts.length === 0 && (
-        <div className="text-center py-20 border border-dashed border-[#2a2a2a] rounded-2xl bg-card/5">
-          <Terminal className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
-          <h3 className="text-lg font-bold text-foreground">No Articles Found</h3>
-          <p className="text-sm text-muted-foreground mt-2">No results matched "{search}".</p>
         </div>
       )}
     </motion.div>

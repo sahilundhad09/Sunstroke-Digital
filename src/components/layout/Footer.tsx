@@ -1,8 +1,13 @@
 import { Link } from 'react-router-dom';
 import { useAnalytics } from '../../hooks/useAnalytics';
+import { useProducts } from '../../hooks/useProducts';
 
 export default function Footer() {
   const { logClick } = useAnalytics();
+  const { products } = useProducts();
+  
+  // Get active published products to display in the footer
+  const footerProducts = products.filter(p => p.is_published).slice(0, 4);
 
   return (
     <footer className="w-full border-t border-border/40 bg-background/50 py-12 mt-auto text-left">
@@ -33,7 +38,7 @@ export default function Footer() {
                 onClick={() => logClick('footer-social-pinterest')}
               >
                 <svg className="h-4 w-4 fill-current" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M12.289 2C6.617 2 2 6.617 2 12.289c0 4.305 2.651 8.01 6.446 9.585-.09-.8-.172-2.038.037-2.919l1.682-7.116s-.43-.86-.43-2.133c0-2 .115-3.5 1.5-3.5 1.417 0 2.102 1.064 2.102 2.338 0 1.425-.907 3.556-1.378 5.534-.391 1.65.823 3 2.45 3 2.94 0 5.2-3.1 5.2-7.575 0-3.96-2.846-6.728-6.907-6.728-4.707 0-7.47 3.53-7.47 7.18 0 1.42.548 2.943 1.232 3.77a.4.4 0 0 1 .093.385l-.462 1.884c-.075.308-.248.375-.57.225-2.115-.983-3.435-4.08-3.435-6.567 0-5.348 3.885-10.26 11.2-10.26 5.88 0 10.455 4.19 10.455 9.8 0 5.842-3.682 10.545-8.79 10.545-1.717 0-3.33-.892-3.88-1.937l-1.058 4.032c-.383 1.467-1.425 3.31-2.122 4.453C9.524 23.83 10.742 24 12 24c5.671 0 10.289-4.617 10.289-10.289C22.289 6.617 17.671 2 12.289 2z" />
+                  <path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.41 7.61 11.162-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.966 1.406-5.966s-.359-.72-.359-1.781c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.204 0 1.03.397 2.138.893 2.738.098.119.112.224.083.342l-.333 1.36c-.053.22-.172.269-.401.162-1.499-.696-2.435-2.89-2.435-4.651 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.631-2.75-1.378l-.748 2.853c-.27 1.043-1.002 2.35-1.492 3.146 1.124.347 2.317.535 3.554.535 6.607 0 11.985-5.36 11.985-11.987C23.97 5.39 18.592.022 12.017.022z" />
                 </svg>
               </a>
               {/* Instagram */}
@@ -84,21 +89,32 @@ export default function Footer() {
           <div>
             <h4 className="text-sm font-semibold text-foreground mb-4 font-heading">Products</h4>
             <ul className="space-y-2 text-xs">
-              <li>
-                <Link to="/products" className="text-muted-foreground hover:text-violet-400 transition-colors" onClick={() => logClick('footer-link-products-all')}>
-                  All Products
-                </Link>
-              </li>
-              <li>
-                <Link to="/products?category=ai-tools" className="text-muted-foreground hover:text-violet-400 transition-colors" onClick={() => logClick('footer-link-products-ai')}>
-                  AI Prompt Kits
-                </Link>
-              </li>
-              <li>
-                <Link to="/products?category=resume" className="text-muted-foreground hover:text-violet-400 transition-colors" onClick={() => logClick('footer-link-products-resume')}>
-                  Resume Templates
-                </Link>
-              </li>
+              {footerProducts.length > 0 ? (
+                footerProducts.map(p => (
+                  <li key={p.id}>
+                    <Link
+                      to={`/products/${p.slug}`}
+                      className="text-muted-foreground hover:text-violet-400 transition-colors"
+                      onClick={() => logClick(`footer-link-product-${p.slug}`)}
+                    >
+                      {p.title}
+                    </Link>
+                  </li>
+                ))
+              ) : (
+                <li>
+                  <Link to="/products" className="text-muted-foreground hover:text-violet-400 transition-colors" onClick={() => logClick('footer-link-products-all')}>
+                    All Products
+                  </Link>
+                </li>
+              )}
+              {footerProducts.length > 0 && (
+                <li className="pt-1">
+                  <Link to="/products" className="text-violet-400 hover:text-violet-300 font-semibold transition-colors" onClick={() => logClick('footer-link-products-all')}>
+                    View All Products &rarr;
+                  </Link>
+                </li>
+              )}
             </ul>
           </div>
 
@@ -112,11 +128,6 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link to="/free" className="text-muted-foreground hover:text-violet-400 transition-colors" onClick={() => logClick('footer-link-freebie')}>
-                  Free Resources & Prompts
-                </Link>
-              </li>
-              <li>
                 <Link to="/about" className="text-muted-foreground hover:text-violet-400 transition-colors" onClick={() => logClick('footer-link-about')}>
                   About the Developer
                 </Link>
@@ -124,15 +135,10 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Section 4: Connect & Admin */}
+          {/* Section 4: System */}
           <div>
-            <h4 className="text-sm font-semibold text-foreground mb-4 font-heading">Connect</h4>
+            <h4 className="text-sm font-semibold text-foreground mb-4 font-heading">System</h4>
             <ul className="space-y-2 text-xs">
-              <li>
-                <Link to="/affiliates" className="text-muted-foreground hover:text-violet-400 transition-colors" onClick={() => logClick('footer-link-affiliates')}>
-                  Recommendations & Tools
-                </Link>
-              </li>
               <li>
                 <Link to="/admin" className="text-muted-foreground hover:text-violet-400 transition-colors" onClick={() => logClick('footer-link-admin')}>
                   Admin Dashboard

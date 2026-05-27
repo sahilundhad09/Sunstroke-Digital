@@ -55,13 +55,13 @@ export const MOCK_PRODUCTS: Product[] = [
 ];
 
 export const useProducts = () => {
-  const [products, setProducts] = useState<Product[]>(MOCK_PRODUCTS);
+  const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   const fetchProducts = async () => {
     setLoading(true);
-      try {
+    try {
       const { data, error: fetchErr } = await supabase
         .from('products')
         .select('*')
@@ -69,17 +69,17 @@ export const useProducts = () => {
 
       if (fetchErr) throw fetchErr;
 
-      if (data && data.length > 0) {
+      if (data) {
         setProducts(data as Product[]);
       } else {
-        setProducts(MOCK_PRODUCTS);
+        setProducts([]);
       }
       setError(null);
     } catch (err: any) {
       if (import.meta.env.DEV) {
-        console.warn('Failed to fetch products from Supabase, using mock data:', err.message);
+        console.warn('Failed to fetch products from Supabase:', err.message);
       }
-      setProducts(MOCK_PRODUCTS);
+      setProducts([]);
     } finally {
       setLoading(false);
     }
@@ -103,14 +103,9 @@ export const useProducts = () => {
       return { success: true, data };
     } catch (err: any) {
       if (import.meta.env.DEV) {
-        console.warn('Error adding product to Supabase, adding locally:', err.message);
+        console.warn('Error adding product to Supabase:', err.message);
       }
-      const newProduct: Product = {
-        ...productData,
-        id: crypto.randomUUID(),
-      };
-      setProducts(prev => [newProduct, ...prev]);
-      return { success: true, fallback: true };
+      return { success: false, error: err.message };
     }
   };
 
@@ -127,10 +122,9 @@ export const useProducts = () => {
       return { success: true };
     } catch (err: any) {
       if (import.meta.env.DEV) {
-        console.warn('Error deleting product from Supabase, deleting locally:', err.message);
+        console.warn('Error deleting product from Supabase:', err.message);
       }
-      setProducts(prev => prev.filter(p => p.id !== id));
-      return { success: true, fallback: true };
+      return { success: false, error: err.message };
     }
   };
 

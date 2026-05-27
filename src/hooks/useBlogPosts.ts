@@ -104,7 +104,7 @@ Mastering this transition converts technical authority into digital product sale
 ];
 
 export const useBlogPosts = () => {
-  const [posts, setPosts] = useState<BlogPost[]>(MOCK_POSTS);
+  const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -119,17 +119,17 @@ export const useBlogPosts = () => {
 
       if (fetchErr) throw fetchErr;
 
-      if (data && data.length > 0) {
+      if (data) {
         setProductsList(data as BlogPost[]);
       } else {
-        setProductsList(MOCK_POSTS);
+        setProductsList([]);
       }
       setError(null);
     } catch (err: any) {
       if (import.meta.env.DEV) {
-        console.warn('Failed to fetch blog posts from Supabase, using mock data:', err.message);
+        console.warn('Failed to fetch blog posts from Supabase:', err.message);
       }
-      setProductsList(MOCK_POSTS);
+      setProductsList([]);
     } finally {
       setLoading(false);
     }

@@ -7,10 +7,13 @@ import { Badge } from '@/components/ui/badge';
 import { useProducts } from '../hooks/useProducts';
 import { useAnalytics } from '../hooks/useAnalytics';
 import { supabase } from '../lib/supabase';
+import SEO from '../components/common/SEO';
+import { PageSkeleton } from '../components/common/LoadingSkeleton';
+import NotFound from './NotFound';
 
 export default function ProductDetail() {
   const { id } = useParams<{ id: string }>();
-  const { products } = useProducts();
+  const { products, loading } = useProducts();
   const { logClick, trackProductView, trackCheckoutClick, trackLeadCapture } = useAnalytics();
   
   const [email, setEmail] = useState('');
@@ -26,6 +29,14 @@ export default function ProductDetail() {
       trackProductView(product.id, product.title);
     }
   }, [product?.id]);
+
+  if (loading) {
+    return <PageSkeleton />;
+  }
+
+  if (!product) {
+    return <NotFound />;
+  }
 
   const faqs = [
     {
@@ -121,6 +132,11 @@ export default function ProductDetail() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 text-left space-y-16">
+      <SEO 
+        title={`${product.title} - Sunstroke Digital`} 
+        description={product.description} 
+        image={product.cover_image_url || undefined}
+      />
       
       {/* Back link */}
       <div>
@@ -164,6 +180,7 @@ export default function ProductDetail() {
                 src={product.cover_image_url} 
                 alt={product.title} 
                 className="w-full h-full object-cover"
+                loading="lazy"
               />
             )}
           </div>
@@ -315,7 +332,12 @@ export default function ProductDetail() {
               <GlowCard key={p.id} className="bg-card/20 border border-border/40 hover:border-purple-500/25 p-5 flex flex-col justify-between h-full transition-all">
                 <div>
                   <div className="aspect-video w-full rounded-lg overflow-hidden mb-4 relative bg-muted border border-border/30">
-                    <img src={p.cover_image_url || ''} alt={p.title} className="w-full h-full object-cover" />
+                    <img 
+                      src={p.cover_image_url || ''} 
+                      alt={p.title} 
+                      className="w-full h-full object-cover" 
+                      loading="lazy"
+                    />
                   </div>
                   <h3 className="font-bold text-sm text-foreground mb-1 leading-snug">{p.title}</h3>
                   <p className="text-2xs text-muted-foreground line-clamp-2 leading-relaxed mb-4">{p.description}</p>

@@ -7,17 +7,18 @@ import { GlowCard } from '../components/ui/GlowCard';
 import { Badge } from '@/components/ui/badge';
 import { useProducts } from '../hooks/useProducts';
 import { useAnalytics } from '../hooks/useAnalytics';
+import SEO from '../components/common/SEO';
+import { ProductGridSkeleton } from '../components/common/LoadingSkeleton';
 
 export default function Products() {
   const { products, loading } = useProducts();
   const { logClick } = useAnalytics();
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
-  const categories = [
-    { label: 'All Products', value: 'all' },
-    { label: 'AI Tools', value: 'ai-tools' },
-    { label: 'Resume & Portfolio', value: 'resume' },
-    { label: 'Other', value: 'other' },
+  // Dynamically extract active categories from published products
+  const activeCategories = [
+    'all',
+    ...Array.from(new Set(products.filter(p => p.is_published).map(p => p.category).filter(Boolean)))
   ];
 
   const filteredProducts = selectedCategory === 'all'
@@ -31,6 +32,11 @@ export default function Products() {
       transition={{ duration: 0.3 }}
       className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 text-left"
     >
+      <SEO 
+        title="Products Hub - Premium Digital Templates & Assets | Sunstroke Digital" 
+        description="Deploy premium templates, launch boilerplates, and build your digital empire with vetted, high-quality development assets."
+      />
+
       <div className="max-w-3xl mb-12">
         <h1 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-5xl">
           Digital Products Hub
@@ -41,35 +47,39 @@ export default function Products() {
       </div>
 
       {/* Categories Filtering tabs */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-border/40 pb-6 mb-10">
-        <div className="flex flex-wrap gap-2">
-          {categories.map((cat) => (
-            <Button
-              key={cat.value}
-              size="sm"
-              variant={selectedCategory === cat.value ? 'default' : 'outline'}
-              className={selectedCategory === cat.value ? 'bg-violet-600 hover:bg-violet-700 text-white rounded-xl' : 'border-[#2a2a2a] text-muted-foreground hover:text-foreground rounded-xl'}
-              onClick={() => {
-                setSelectedCategory(cat.value);
-                logClick(`products-filter-${cat.value}`);
-              }}
-            >
-              {cat.label}
-            </Button>
-          ))}
+      {activeCategories.length > 2 && (
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-border/40 pb-6 mb-10">
+          <div className="flex flex-wrap gap-2">
+            {activeCategories.map((cat) => (
+              <Button
+                key={cat}
+                size="sm"
+                variant={selectedCategory === cat ? 'default' : 'outline'}
+                className={selectedCategory === cat ? 'bg-violet-600 hover:bg-violet-700 text-white rounded-xl' : 'border-[#2a2a2a] text-muted-foreground hover:text-foreground rounded-xl capitalize'}
+                onClick={() => {
+                  setSelectedCategory(cat);
+                  logClick(`products-filter-${cat}`);
+                }}
+              >
+                {cat === 'all' ? 'All Products' : cat.replace('-', ' ')}
+              </Button>
+            ))}
+          </div>
+          <div className="flex items-center text-xs text-muted-foreground space-x-1.5 bg-muted/40 px-3 py-1.5 rounded-lg border border-border/40">
+            <SlidersHorizontal className="h-3.5 w-3.5" />
+            <span>Showing {filteredProducts.length} items</span>
+          </div>
         </div>
-        <div className="flex items-center text-xs text-muted-foreground space-x-1.5 bg-muted/40 px-3 py-1.5 rounded-lg border border-border/40">
-          <SlidersHorizontal className="h-3.5 w-3.5" />
-          <span>Showing {filteredProducts.length} items</span>
-        </div>
-      </div>
+      )}
 
       {/* Loading state */}
       {loading ? (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {[...Array(3)].map((_, i) => (
-            <div key={i} className="h-96 w-full animate-pulse rounded-2xl border border-[#2a2a2a] bg-card/25" />
-          ))}
+        <ProductGridSkeleton count={6} />
+      ) : filteredProducts.length === 0 ? (
+        <div className="text-center py-20 border border-dashed border-[#2a2a2a] rounded-2xl bg-[#111111]/30">
+          <Terminal className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
+          <h3 className="text-lg font-bold text-foreground">No Products Found</h3>
+          <p className="text-sm text-muted-foreground mt-2">Try selecting a different product category or check back later.</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -89,6 +99,7 @@ export default function Products() {
                       src={product.cover_image_url || ''} 
                       alt={product.title} 
                       className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
+                      loading="lazy"
                     />
                     <Badge className="absolute top-3 right-3 bg-black/70 border-white/10 text-xs font-semibold capitalize text-violet-300">
                       {product.category.replace('-', ' ')}
@@ -132,15 +143,6 @@ export default function Products() {
               </GlowCard>
             </motion.div>
           ))}
-        </div>
-      )}
-
-      {/* No results state */}
-      {!loading && filteredProducts.length === 0 && (
-        <div className="text-center py-20 border border-dashed border-[#2a2a2a] rounded-2xl bg-card/5">
-          <Terminal className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
-          <h3 className="text-lg font-bold text-foreground">No Products Found</h3>
-          <p className="text-sm text-muted-foreground mt-2">Try selecting a different product category.</p>
         </div>
       )}
     </motion.div>

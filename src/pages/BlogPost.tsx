@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, Calendar, Terminal, ChevronRight, Check, Share2 } from 'lucide-react';
+import { Calendar, Terminal, ChevronRight, Check, Share2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { GlowCard } from '../components/ui/GlowCard';
 import { Badge } from '@/components/ui/badge';
@@ -8,6 +8,9 @@ import { MOCK_POSTS } from '../hooks/useBlogPosts';
 import { useAnalytics } from '../hooks/useAnalytics';
 import { supabase } from '../lib/supabase';
 import type { BlogPost as BlogPostType } from '../types';
+import SEO from '../components/common/SEO';
+import { PageSkeleton } from '../components/common/LoadingSkeleton';
+import NotFound from './NotFound';
 
 export default function BlogPost() {
   const { slug } = useParams<{ slug: string }>();
@@ -90,29 +93,11 @@ export default function BlogPost() {
   };
 
   if (loading) {
-    return (
-      <div className="mx-auto max-w-4xl px-4 py-24 text-center space-y-4">
-        <div className="h-10 w-2/3 bg-card/30 animate-pulse rounded mx-auto" />
-        <div className="h-[300px] w-full bg-card/25 animate-pulse rounded-2xl" />
-        <div className="h-6 w-full bg-card/20 animate-pulse rounded" />
-        <div className="h-6 w-5/6 bg-card/20 animate-pulse rounded" />
-      </div>
-    );
+    return <PageSkeleton />;
   }
 
   if (!post) {
-    return (
-      <div className="mx-auto max-w-7xl px-4 py-20 text-center">
-        <Terminal className="mx-auto h-16 w-16 text-red-500 mb-4" />
-        <h2 className="text-2xl font-bold text-foreground">Article Not Found</h2>
-        <p className="text-muted-foreground mt-2">The article you are looking for does not exist.</p>
-        <Link to="/blog" className="mt-6 inline-block">
-          <Button variant="outline" className="border-border">
-            <ArrowLeft className="mr-2 h-4 w-4" /> Back to Blog
-          </Button>
-        </Link>
-      </div>
-    );
+    return <NotFound />;
   }
 
   // Related posts: exclude current, match tags or just take first two
@@ -128,6 +113,12 @@ export default function BlogPost() {
 
   return (
     <div className="mx-auto max-w-4xl px-4 sm:px-6 py-12 text-left space-y-8">
+      <SEO 
+        title={`${post.title} | Sunstroke Digital Blog`} 
+        description={post.excerpt} 
+        image={post.cover_image_url || undefined}
+        type="article"
+      />
       {/* Breadcrumbs / Back Link */}
       <div className="flex items-center space-x-2 text-xs text-muted-foreground">
         <Link to="/blog" className="hover:text-foreground transition-colors" onClick={() => logClick('blog-post-back-nav')}>
@@ -207,6 +198,7 @@ export default function BlogPost() {
           src={post.cover_image_url || ''} 
           alt={post.title} 
           className="w-full h-full object-cover"
+          loading="lazy"
         />
       </div>
 
@@ -253,6 +245,7 @@ export default function BlogPost() {
             src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200" 
             alt="Sahil" 
             className="h-16 w-16 rounded-full object-cover border-2 border-purple-500"
+            loading="lazy"
           />
           <div className="space-y-2 text-center sm:text-left">
             <h4 className="text-base font-bold text-foreground">Written by Sahil</h4>
@@ -306,7 +299,12 @@ export default function BlogPost() {
               <div key={p.id} className="p-5 rounded-xl border border-border/40 bg-card/10 flex flex-col justify-between space-y-4 hover:border-purple-500/30 transition-colors">
                 <div>
                   <div className="aspect-video w-full rounded-lg overflow-hidden mb-3 bg-muted">
-                    <img src={p.cover_image_url || ''} alt={p.title} className="object-cover w-full h-full" />
+                    <img 
+                      src={p.cover_image_url || ''} 
+                      alt={p.title} 
+                      className="object-cover w-full h-full" 
+                      loading="lazy"
+                    />
                   </div>
                   <h4 className="font-bold text-sm text-foreground hover:text-purple-400 transition-colors">
                     <Link to={`/blog/${p.slug}`} onClick={() => logClick(`blog-related-link-${p.id}`)}>

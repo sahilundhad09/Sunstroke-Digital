@@ -1,10 +1,10 @@
-import { Cpu, Terminal, Laptop, Code2, Heart, ArrowRight } from 'lucide-react';
+import { Cpu, Code2, Heart, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { GlowCard } from '@/components/ui/GlowCard';
 import { Badge } from '@/components/ui/badge';
 import { useAnalytics } from '../hooks/useAnalytics';
+import SEO from '../components/common/SEO';
 
 export default function About() {
   const { logClick } = useAnalytics();
@@ -15,26 +15,7 @@ export default function About() {
     { category: 'DevOps & Services', items: ['Vercel', 'Docker', 'AWS S3', 'Resend', 'GitHub Actions', 'Linux'] },
   ];
 
-  const gear = [
-    {
-      category: 'Hardware & Workstation',
-      icon: <Laptop className="h-5 w-5 text-violet-400" />,
-      items: [
-        { name: 'MacBook Pro M3 Max (36GB RAM)', desc: 'My primary work machine for local development and product packaging.' },
-        { name: 'Dell UltraSharp 32" 4K USB-C Monitor', desc: 'Extra screen real-estate for side-by-side terminal and browser debug sessions.' },
-        { name: 'Keychron Q1 Max Mechanical Keyboard', desc: 'Custom tactile keys (Gateron Brown switches) for long coding sessions.' },
-      ],
-    },
-    {
-      category: 'Development & Terminal',
-      icon: <Terminal className="h-5 w-5 text-cyan-400" />,
-      items: [
-        { name: 'VS Code (Tokyo Night Theme)', desc: 'Minimalist configuration with custom bindings and Github Copilot integration.' },
-        { name: 'Alacritty + Zsh + OhMyZsh', desc: 'Fast, GPU-accelerated terminal shell with custom prompt styling.' },
-        { name: 'TablePlus & Postico', desc: 'Database client GUI for debugging PostgreSQL tables and local schemas.' },
-      ],
-    },
-  ];
+
 
   return (
     <motion.div
@@ -43,7 +24,10 @@ export default function About() {
       transition={{ duration: 0.3 }}
       className="mx-auto max-w-5xl px-4 sm:px-6 py-16 text-left space-y-20"
     >
-
+      <SEO 
+        title="About Me - Creator Profile | Sunstroke Digital" 
+        description="Software developer & digital product creator. Learn about my technical background, stack, and philosophy."
+      />
       {/* 1. Bio & Photo section */}
       <section className="grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
         <div className="md:col-span-8 space-y-6">
@@ -129,6 +113,7 @@ export default function About() {
               src="/sahil_pic.jpg"
               alt="Sahil Undhad"
               className="relative h-44 w-44 rounded-full object-cover border border-border/80"
+              loading="lazy"
             />
           </div>
         </div>
@@ -164,45 +149,7 @@ export default function About() {
         </div>
       </section>
 
-      {/* 3. Setup & Workspace */}
-      <section className="border-t border-[#2a2a2a] pt-16 space-y-8">
-        <div>
-          <h2 className="text-2xl font-bold text-foreground">My Setup & Gear</h2>
-          <p className="text-xs text-muted-foreground mt-1">Inspired by the "uses" trend. Here is the hardware and software configuration I rely on daily.</p>
-        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {gear.map((section, idx) => (
-            <motion.div
-              key={idx}
-              initial={{ opacity: 0, y: 15 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.3 }}
-              whileHover={{ y: -4 }}
-              className="h-full"
-            >
-              <GlowCard className="flex flex-col justify-start h-full bg-[#111111] hover:border-violet-500 transition-all border border-[#2a2a2a] duration-300" glowColor="rgba(6, 182, 212, 0.15)">
-                <h3 className="text-lg font-bold text-foreground mb-6 flex items-center space-x-2.5">
-                  <span className="p-2 bg-secondary rounded-lg border border-[#2a2a2a] shrink-0">
-                    {section.icon}
-                  </span>
-                  <span>{section.category}</span>
-                </h3>
-
-                <div className="space-y-6">
-                  {section.items.map((item, i) => (
-                    <div key={i} className="space-y-1">
-                      <h4 className="text-sm font-bold text-foreground">{item.name}</h4>
-                      <p className="text-xs text-muted-foreground leading-relaxed">{item.desc}</p>
-                    </div>
-                  ))}
-                </div>
-              </GlowCard>
-            </motion.div>
-          ))}
-        </div>
-      </section>
 
       {/* Philosophy Callout */}
       <section className="border-t border-[#2a2a2a] pt-16 text-center max-w-2xl mx-auto space-y-4">

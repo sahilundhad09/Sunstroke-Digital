@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
-import { Menu, X, ArrowRight } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Menu, X } from 'lucide-react';
 import { useAnalytics } from '../../hooks/useAnalytics';
 
 export default function Navbar() {
@@ -11,7 +10,6 @@ export default function Navbar() {
   const navLinks = [
     { name: 'Products', path: '/products' },
     { name: 'Blog', path: '/blog' },
-    { name: 'Affiliates', path: '/affiliates' },
     { name: 'About', path: '/about' },
   ];
 
@@ -23,23 +21,29 @@ export default function Navbar() {
           <div className="flex items-center">
             <Link 
               to="/" 
-              className="flex items-center space-x-2.5 text-xl font-bold tracking-tight text-foreground hover:opacity-90 transition-opacity"
+              className="flex items-center space-x-2"
               onClick={() => logClick('nav-logo')}
             >
-              <img src="/sunstroke_logo.jpg" alt="Sunstroke Digital Logo" className="h-8 w-8 rounded-lg object-cover border border-[#2a2a2a]" />
-              <span className="bg-gradient-to-r from-violet-400 to-cyan-400 bg-clip-text text-transparent">Sunstroke Digital</span>
+              <img
+                src="/sunstroke_logo.jpg"
+                alt="Sunstroke Digital Logo"
+                className="h-8 w-8 rounded-lg object-cover border border-[#2a2a2a]"
+              />
+              <span className="text-sm font-extrabold tracking-tight bg-gradient-to-r from-violet-400 to-cyan-400 bg-clip-text text-transparent">
+                Sunstroke Digital
+              </span>
             </Link>
           </div>
 
-          {/* Nav Links Center */}
+          {/* Links Center */}
           <div className="hidden md:flex items-center space-x-8">
             {navLinks.map((link) => (
               <NavLink
                 key={link.path}
                 to={link.path}
                 className={({ isActive }) =>
-                  `text-sm font-medium transition-colors hover:text-violet-400 ${
-                    isActive ? 'text-violet-400 font-semibold' : 'text-muted-foreground'
+                  `text-xs font-semibold tracking-wide transition-colors hover:text-violet-400 ${
+                    isActive ? 'text-violet-400 font-bold' : 'text-muted-foreground'
                   }`
                 }
                 onClick={() => logClick(`nav-link-${link.name.toLowerCase()}`)}
@@ -62,12 +66,6 @@ export default function Navbar() {
             >
               Admin
             </NavLink>
-            <Link to="/free" onClick={() => logClick('nav-cta-freebie')}>
-              <Button size="sm" className="bg-violet-600 hover:bg-violet-700 text-white rounded-xl font-medium group">
-                <span>Get Free Resource</span>
-                <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </Button>
-            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -113,19 +111,6 @@ export default function Navbar() {
             >
               Admin Dashboard
             </NavLink>
-            <Link 
-              to="/free" 
-              onClick={() => {
-                setIsOpen(false);
-                logClick('nav-mobile-cta-freebie');
-              }}
-              className="w-full"
-            >
-              <Button className="w-full bg-violet-600 hover:bg-violet-700 text-white justify-center rounded-xl">
-                <span>Get Free Resource</span>
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-            </Link>
           </div>
         </div>
       )}
