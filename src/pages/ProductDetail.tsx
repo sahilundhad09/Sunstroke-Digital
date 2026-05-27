@@ -57,18 +57,7 @@ export default function ProductDetail() {
     }
   ];
 
-  const productTestimonials = [
-    {
-      quote: "Exactly what I was looking for. The codebase is clean, well-documented, and was ready to deploy in under 5 minutes.",
-      author: "Robert T.",
-      role: "Lead Engineer"
-    },
-    {
-      quote: "The prompt kits are high value. They helped us restructure our support flows and cut down OpenAI token fees by 30%.",
-      author: "Daniel K.",
-      role: "Indie Creator"
-    }
-  ];
+
 
   if (!product) {
     return (
@@ -83,6 +72,51 @@ export default function ProductDetail() {
         </Link>
       </div>
     );
+  }
+
+  // Dynamic reviews based on product
+  let productTestimonials = [
+    {
+      quote: "Exactly what I was looking for. The codebase is clean, well-documented, and was ready to deploy in under 5 minutes.",
+      author: "Robert T.",
+      role: "Lead Engineer"
+    },
+    {
+      quote: "The prompt kits are high value. They helped us restructure our support flows and cut down OpenAI token fees by 30%.",
+      author: "Daniel K.",
+      role: "Indie Creator"
+    }
+  ];
+
+  const productTitleLower = (product.title || '').toLowerCase();
+  const productSlugLower = (product.slug || '').toLowerCase();
+
+  if (productSlugLower === 'ats-resume-kit' || productTitleLower.includes('resume')) {
+    productTestimonials = [
+      {
+        quote: "Got a callback from TCS within a week of using this template. The single-column format made a huge difference — my previous resume wasn't even getting past the screening.",
+        author: "Priya M.",
+        role: "IT Graduate, Pune"
+      },
+      {
+        quote: "Clear, professional, and actually ATS-safe. I wasted months on fancy multi-column formats. This kit explains exactly why they fail and gives you what actually works.",
+        author: "Arjun S.",
+        role: "MBA Fresher, Bangalore"
+      }
+    ];
+  } else if (productSlugLower === '100-chatgpt-prompts' || productTitleLower.includes('chatgpt') || productTitleLower.includes('prompt')) {
+    productTestimonials = [
+      {
+        quote: "I was spending 2 hours writing Instagram content every day. With this prompt pack I'm done in 20 minutes. The hooks and caption sections alone are worth it.",
+        author: "Sarah K.",
+        role: "Lifestyle Creator, US"
+      },
+      {
+        quote: "Every prompt works exactly as described. I've tried other prompt packs but they're vague. These are specific, copy-paste ready, and actually sound human.",
+        author: "Meera R.",
+        role: "Social Media Manager"
+      }
+    ];
   }
 
   const handleFreeDownload = async (e: React.FormEvent) => {
@@ -158,9 +192,27 @@ export default function ProductDetail() {
           {/* Header Info */}
           <div className="space-y-4">
             <div className="flex flex-wrap items-center gap-2">
-              <Badge className="bg-purple-500/10 text-purple-400 border border-purple-500/20 capitalize">
-                {product.category.replace('-', ' ')}
-              </Badge>
+              {(() => {
+                let displayCategory = product.category.replace('-', ' ');
+                let badgeStyle = {};
+                let badgeClass = "bg-purple-500/10 text-purple-400 border border-purple-500/20 capitalize";
+
+                if (productSlugLower === 'ats-resume-kit' || productTitleLower.includes('resume')) {
+                  displayCategory = 'Resume Kit';
+                  badgeStyle = { backgroundColor: '#1D9E75', color: '#ffffff' };
+                  badgeClass = "border-transparent text-xs font-semibold capitalize text-white px-2.5 py-0.5 rounded";
+                } else if (productSlugLower === '100-chatgpt-prompts' || productTitleLower.includes('chatgpt') || productTitleLower.includes('prompt')) {
+                  displayCategory = 'AI Prompts';
+                  badgeStyle = { backgroundColor: '#7C3AED', color: '#ffffff' };
+                  badgeClass = "border-transparent text-xs font-semibold capitalize text-white px-2.5 py-0.5 rounded";
+                }
+
+                return (
+                  <Badge className={badgeClass} style={badgeStyle}>
+                    {displayCategory}
+                  </Badge>
+                );
+              })()}
               <Badge variant="outline" className="border-border">
                 Instant Access
               </Badge>

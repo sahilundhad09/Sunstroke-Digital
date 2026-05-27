@@ -54,14 +54,22 @@ export default function SEO({
     // 5. Update Open Graph (OG) tags for Facebook/Pinterest sharing
     setMetaTag('og:title', title, 'property');
     setMetaTag('og:description', description, 'property');
-    setMetaTag('og:image', image.startsWith('http') ? image : window.location.origin + image, 'property');
+    const absoluteImage = image.startsWith('http') ? image : window.location.origin + image;
+    setMetaTag('og:image', absoluteImage, 'property');
     setMetaTag('og:type', type, 'property');
     setMetaTag('og:url', window.location.href, 'property');
 
     // Pinterest specific tags
     setMetaTag('og:site_name', 'Sunstroke Digital', 'property');
 
-    // 6. Update Canonical URL
+    // 6. Update Twitter Card tags
+    setMetaTag('twitter:card', 'summary_large_image');
+    setMetaTag('twitter:title', title);
+    setMetaTag('twitter:description', description);
+    setMetaTag('twitter:image', absoluteImage);
+    setMetaTag('twitter:url', window.location.href);
+
+    // 7. Update Canonical URL
     const canonicalUrl = canonical || window.location.origin + location.pathname;
     setCanonicalLink(canonicalUrl);
   }, [title, description, image, type, canonical, location.pathname]);

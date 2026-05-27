@@ -1,4 +1,4 @@
-import { Cpu, Code2, Heart, ArrowRight } from 'lucide-react';
+import { Cpu, Heart, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
@@ -8,12 +8,6 @@ import SEO from '../components/common/SEO';
 
 export default function About() {
   const { logClick } = useAnalytics();
-
-  const skills = [
-    { category: 'Frontend Stack', items: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'Shadcn UI', 'Redux Toolkit'] },
-    { category: 'Backend & DB', items: ['Node.js', 'Supabase', 'PostgreSQL', 'Express', 'GraphQL', 'Stripe Billing'] },
-    { category: 'DevOps & Services', items: ['Vercel', 'Docker', 'AWS S3', 'Resend', 'GitHub Actions', 'Linux'] },
-  ];
 
 
 
@@ -35,11 +29,30 @@ export default function About() {
             Hey, I'm Sahil.
           </h1>
           <p className="text-base text-muted-foreground leading-relaxed">
-            I am a software developer, digital product creator, and developer educator. I design and build production-ready templates, SaaS boilerplates, and content hubs that help engineers skip configuration hell and ship their ideas.
+            I'm a software developer and digital product creator building tools I wish existed — resume templates that actually get you shortlisted, AI prompt kits that make content creation instant, and digital resources that save you hours of work.
           </p>
-          <p className="text-sm text-muted-foreground leading-relaxed">
-            I started Sunstroke Digital to solve my own frustration: spending the first week of every new project setting up databases, user authentication, styling architectures, and payment webhooks. My goal is to save you those 40+ hours so you can write actual business features.
+          <p className="text-base text-muted-foreground leading-relaxed">
+            I started Sunstroke Digital because I kept seeing people struggle with the same problems: resumes that looked great but got rejected by ATS systems, content creators staring at blank pages, entrepreneurs wasting money on tools that didn't deliver. So I built the solutions myself.
           </p>
+          <p className="text-base text-muted-foreground leading-relaxed">
+            Every product I launch is tested, specific, and genuinely useful. No fluff. No filler.
+          </p>
+
+          {/* What I build */}
+          <div className="space-y-3 pt-2">
+            <h4 className="text-xs font-bold uppercase tracking-widest text-muted-foreground">What I build:</h4>
+            <div className="flex flex-wrap gap-2">
+              <Badge className="bg-violet-500/10 text-violet-400 border border-violet-500/20 px-3 py-1 hover:bg-violet-500/20 rounded-xl font-medium">
+                Resume Templates
+              </Badge>
+              <Badge className="bg-violet-500/10 text-violet-400 border border-violet-500/20 px-3 py-1 hover:bg-violet-500/20 rounded-xl font-medium">
+                AI Prompt Kits
+              </Badge>
+              <Badge className="bg-violet-500/10 text-violet-400 border border-violet-500/20 px-3 py-1 hover:bg-violet-500/20 rounded-xl font-medium">
+                Creator Tools
+              </Badge>
+            </div>
+          </div>
 
           {/* CTA & Socials */}
           <div className="flex flex-wrap items-center gap-4 pt-2">
@@ -119,35 +132,7 @@ export default function About() {
         </div>
       </section>
 
-      {/* 2. Tech Stack / Skills */}
-      <section className="border-t border-[#2a2a2a] pt-16 space-y-8">
-        <div>
-          <h2 className="text-2xl font-bold text-foreground">Stack & Toolbox</h2>
-          <p className="text-xs text-muted-foreground mt-1">My core technologies for shipping performant web applications.</p>
-        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {skills.map((skill, idx) => (
-            <motion.div
-              key={idx}
-              whileHover={{ y: -4 }}
-              className="p-6 rounded-2xl border border-[#2a2a2a] bg-[#111111] hover:border-violet-500 transition-all duration-300"
-            >
-              <h3 className="text-sm font-bold text-violet-400 mb-4 flex items-center">
-                <Code2 className="h-4 w-4 mr-2" />
-                <span>{skill.category}</span>
-              </h3>
-              <div className="flex flex-wrap gap-2">
-                {skill.items.map((item) => (
-                  <Badge key={item} variant="secondary" className="text-2xs bg-muted text-muted-foreground border-none">
-                    {item}
-                  </Badge>
-                ))}
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </section>
 
 
 

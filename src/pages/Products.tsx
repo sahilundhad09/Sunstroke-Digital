@@ -83,66 +83,120 @@ export default function Products() {
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {filteredProducts.map((product, idx) => (
-            <motion.div
-              key={product.id}
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: idx * 0.05 }}
-              whileHover={{ y: -6 }}
-              className="h-full"
-            >
-              <GlowCard className="flex flex-col justify-between h-full bg-[#111111] hover:border-violet-500 transition-all border border-[#2a2a2a] duration-300">
-                <div>
-                  <div className="aspect-video w-full overflow-hidden rounded-lg mb-6 relative border border-[#2a2a2a] bg-muted">
-                    <img 
-                      src={product.cover_image_url || ''} 
-                      alt={product.title} 
-                      className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
-                      loading="lazy"
-                    />
-                    <Badge className="absolute top-3 right-3 bg-black/70 border-white/10 text-xs font-semibold capitalize text-violet-300">
-                      {product.category.replace('-', ' ')}
-                    </Badge>
-                  </div>
-                  
-                  <h3 className="text-xl font-bold text-foreground mb-2">
-                    {product.title}
-                  </h3>
-                  
-                  <p className="text-sm text-muted-foreground mb-6 line-clamp-2">
-                    {product.description}
-                  </p>
+          {filteredProducts.map((product, idx) => {
+            const productTitleLower = (product.title || '').toLowerCase();
+            const productSlugLower = (product.slug || '').toLowerCase();
+            const displayPrice = productSlugLower === 'ats-resume-kit' || productTitleLower.includes('resume')
+              ? 6
+              : productSlugLower === '100-chatgpt-prompts' || productTitleLower.includes('chatgpt') || productTitleLower.includes('prompt')
+                ? 15
+                : product.price;
 
-                  <ul className="space-y-2 mb-6">
-                    {product.tags.map((tag, idx) => (
-                      <li key={idx} className="flex items-center text-xs text-muted-foreground">
-                        <Terminal className="h-3.5 w-3.5 text-violet-500 mr-2 shrink-0" />
-                        <span>{tag}</span>
+            let displayBullets = product.tags;
+            if (productSlugLower === 'ats-resume-kit' || productTitleLower.includes('resume')) {
+              displayBullets = [
+                '5 ATS-Optimised Resume Templates for all job types',
+                'Editable in Google Docs — no Canva or Word license needed',
+                'Includes cover letter guide + interview tips'
+              ];
+            } else if (productSlugLower === '100-chatgpt-prompts' || productTitleLower.includes('chatgpt') || productTitleLower.includes('prompt')) {
+              displayBullets = [
+                '100 tested prompts across 5 content categories',
+                'Works with ChatGPT (free), Claude AI, and Gemini',
+                'Copy-paste ready — no prompt engineering needed'
+              ];
+            } else {
+              displayBullets = (product.tags || []).slice(0, 3);
+            }
+
+            return (
+              <motion.div
+                key={product.id}
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: idx * 0.05 }}
+                whileHover={{ y: -6 }}
+                className="h-full"
+              >
+                <GlowCard className="flex flex-col justify-between h-full bg-[#111111] hover:border-violet-500 transition-all border border-[#2a2a2a] duration-300">
+                  <div>
+                    <div className="aspect-video w-full overflow-hidden rounded-lg mb-6 relative border border-[#2a2a2a] bg-muted">
+                      <img 
+                        src={product.cover_image_url || ''} 
+                        alt={product.title} 
+                        className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
+                        loading="lazy"
+                      />
+                      
+                      {/* Price Badge */}
+                      <div className="absolute bottom-3 left-3 bg-[#7C3AED] text-white text-xs font-semibold px-2.5 py-1 rounded-[20px] z-10 shadow-md">
+                        {displayPrice === 0 ? 'FREE' : `$${displayPrice}`}
+                      </div>
+
+                      {(() => {
+                        let displayCategory = product.category.replace('-', ' ');
+                        let badgeStyle = {};
+                        let badgeClass = "absolute top-3 right-3 bg-black/70 border-white/10 text-xs font-semibold capitalize text-violet-300";
+
+                        if (productSlugLower === 'ats-resume-kit' || productTitleLower.includes('resume')) {
+                          displayCategory = 'Resume Kit';
+                          badgeStyle = { backgroundColor: '#1D9E75', color: '#ffffff' };
+                          badgeClass = "absolute top-3 right-3 border-transparent text-xs font-semibold capitalize text-white";
+                        } else if (productSlugLower === '100-chatgpt-prompts' || productTitleLower.includes('chatgpt') || productTitleLower.includes('prompt')) {
+                          displayCategory = 'AI Prompts';
+                          badgeStyle = { backgroundColor: '#7C3AED', color: '#ffffff' };
+                          badgeClass = "absolute top-3 right-3 border-transparent text-xs font-semibold capitalize text-white";
+                        }
+
+                        return (
+                          <Badge className={badgeClass} style={badgeStyle}>
+                            {displayCategory}
+                          </Badge>
+                        );
+                      })()}
+                    </div>
+                    
+                    <h3 className="text-xl font-bold text-foreground mb-2">
+                      {product.title}
+                    </h3>
+                    
+                    <p className="text-sm text-muted-foreground mb-6 line-clamp-2">
+                      {product.description}
+                    </p>
+
+                    <ul className="space-y-2 mb-6">
+                      {displayBullets.map((tag, idx) => (
+                        <li key={idx} className="flex items-center text-xs text-muted-foreground">
+                          <Terminal className="h-3.5 w-3.5 text-violet-500 mr-2 shrink-0" />
+                          <span>{tag}</span>
+                        </li>
+                      ))}
+                      <li className="text-2xs text-muted-foreground/60 italic pt-1 pl-1">
+                        ... and more inside →
                       </li>
-                    ))}
-                  </ul>
-                </div>
+                    </ul>
+                  </div>
 
-                <div className="pt-4 border-t border-[#2a2a2a] flex items-center justify-between mt-auto">
-                  <span className="text-lg font-bold text-foreground">
-                    {product.price === 0 ? (
-                      <span className="text-green-400 font-extrabold">FREE</span>
-                    ) : (
-                      <span>${product.price}</span>
-                    )}
-                  </span>
-                  
-                  <Link to={`/products/${product.slug}`} onClick={() => logClick(`products-view-${product.id}`)}>
-                    <Button size="sm" variant={product.price === 0 ? "outline" : "default"} className={product.price === 0 ? "border border-violet-600 text-violet-400 hover:bg-violet-600/10 rounded-xl" : "bg-violet-600 hover:bg-violet-700 text-white rounded-xl"}>
-                      <span>View Product</span>
-                      <ArrowRight className="ml-1 h-3.5 w-3.5" />
-                    </Button>
-                  </Link>
-                </div>
-              </GlowCard>
-            </motion.div>
-          ))}
+                  <div className="pt-4 border-t border-[#2a2a2a] flex items-center justify-between mt-auto">
+                    <span className="text-lg font-bold text-foreground">
+                      {displayPrice === 0 ? (
+                        <span className="text-green-400 font-extrabold">FREE</span>
+                      ) : (
+                        <span>${displayPrice}</span>
+                      )}
+                    </span>
+                    
+                    <Link to={`/products/${product.slug}`} onClick={() => logClick(`products-view-${product.id}`)}>
+                      <Button size="sm" className="bg-violet-600 hover:bg-violet-700 text-white rounded-xl flex items-center space-x-1 font-semibold">
+                        <span>View & Buy</span>
+                        <ArrowRight className="h-3.5 w-3.5" />
+                      </Button>
+                    </Link>
+                  </div>
+                </GlowCard>
+              </motion.div>
+            );
+          })}
         </div>
       )}
     </motion.div>

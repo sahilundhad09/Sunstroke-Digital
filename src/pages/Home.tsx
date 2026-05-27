@@ -20,12 +20,13 @@ export default function Home() {
 
 
   const tickerItems = [
-    '500+ active customers',
-    '4.9 Star Average Rating',
-    'Secure Checkout Gumroad & Payhip',
+    'Instant Lifetime Download',
+    'Works with Google Docs & Canva',
+    '500+ Happy Customers',
+    '4.9 Star Average',
+    'New Products Every Month',
+    'Secure Payment via Gumroad & Payhip',
     'Featured on Pinterest & Reddit',
-    'TypeScript Production Ready',
-    'Instant Lifetime Downloads',
   ];
 
   const trustBlocks = [
@@ -61,6 +62,16 @@ export default function Home() {
   // Filter latest blog posts
   const latestPosts = posts.slice(0, 3);
 
+  // Dynamic product cover images for the hero preview
+  const previewImages = products
+    .filter(p => p.cover_image_url && p.is_published)
+    .map(p => p.cover_image_url)
+    .concat([
+      'https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=800&auto=format&fit=crop&q=60',
+      'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&auto=format&fit=crop&q=60'
+    ])
+    .slice(0, 2);
+
   return (
     <div className="flex flex-col space-y-24 pb-20 overflow-hidden text-left">
       <SEO />
@@ -77,15 +88,16 @@ export default function Home() {
           transition={{ duration: 0.3 }}
           className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center space-y-5"
         >
-          <div className="flex justify-center pb-1">
-            <div className="relative">
-              <div className="absolute -inset-2.5 rounded-[2rem] bg-gradient-to-r from-violet-600 to-cyan-500 opacity-70 blur-lg animate-pulse duration-[4000ms]" />
+          {/* Product Cover Image Thumbnails */}
+          <div className="flex justify-center items-center gap-3 pb-3">
+            {previewImages.map((src, index) => (
               <img
-                src="/sunstroke_logo.jpg"
-                alt="Sunstroke Digital Logo"
-                className="relative h-40 w-40 rounded-[2rem] object-cover border border-[#2a2a2a] shadow-2xl"
+                key={index}
+                src={src || ''}
+                alt={`Product preview ${index + 1}`}
+                className="w-[120px] aspect-video object-cover rounded-[12px] border border-white/15 shadow-xl"
               />
-            </div>
+            ))}
           </div>
 
           <Badge className="bg-violet-500/10 text-violet-400 border border-violet-500/20 px-3 py-1 hover:bg-violet-500/20 mx-auto select-none">
@@ -94,14 +106,14 @@ export default function Home() {
           </Badge>
           
           <h1 className="mx-auto max-w-4xl text-3xl font-extrabold tracking-tight text-foreground sm:text-5xl md:text-6xl leading-tight sm:leading-none">
-            Production-Ready Digital Products to{' '}
+            Premium Digital Products for{' '}
             <span className="bg-gradient-to-r from-violet-400 to-cyan-400 bg-clip-text text-transparent">
-              Build & Ship
+              Creators, Job Seekers & Go-Getters
             </span>
           </h1>
           
           <p className="mx-auto max-w-2xl text-sm text-muted-foreground sm:text-base leading-relaxed">
-            Premium templates, SaaS boilerplates, content hubs, and digital assets designed to help you skip configuration hell and bring your ideas to life.
+            Instant-download templates, AI prompt kits, and digital tools — built for people who want real results without the hassle.
           </p>
 
           <div className="flex justify-center pt-2">
