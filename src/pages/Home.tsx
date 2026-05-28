@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import React from 'react';
-import { ArrowRight, Terminal, Shield, Zap, Sparkles, Star, ArrowUpRight, Calendar, ChevronLeft, ChevronRight, ShoppingBag, BookOpen, Wrench, ExternalLink } from 'lucide-react';
+import { ArrowRight, Terminal, Shield, Zap, Sparkles, Star, ArrowUpRight, Calendar, ShoppingBag, BookOpen, Wrench, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { GlowCard } from '../components/ui/GlowCard';
 import { Badge } from '@/components/ui/badge';
@@ -15,7 +15,7 @@ import { ProductGridSkeleton, BlogGridSkeleton } from '../components/common/Load
 export default function Home() {
   const { products, loading: productsLoading } = useProducts();
   const { posts, loading: postsLoading } = useBlogPosts();
-  const { affiliates, loading: affiliatesLoading } = useAffiliates();
+  const { affiliates } = useAffiliates();
   const { logClick, trackAffiliateClick } = useAnalytics();
 
   const [activeTab, setActiveTab] = React.useState<'products' | 'blog' | 'affiliates'>('products');
