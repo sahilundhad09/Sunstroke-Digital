@@ -62,10 +62,10 @@ export default function Affiliates() {
       {/* Intro section */}
       <section className="max-w-3xl">
         <h1 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-5xl">
-          Tools I Personally Use and Recommend
+          Resources I Personally Use and Recommend
         </h1>
         <p className="mt-4 text-base text-muted-foreground leading-relaxed">
-          Hand-picked tools, packages, hosting providers, and digital services that I trust to power production applications.
+          Hand-picked resources, packages, hosting providers, and digital services that I trust to power production applications.
         </p>
       </section>
 
@@ -89,7 +89,7 @@ export default function Affiliates() {
         </div>
         <div className="flex items-center text-xs text-muted-foreground space-x-1.5 bg-muted/40 px-3 py-1.5 rounded-lg border border-border/40">
           <SlidersHorizontal className="h-3.5 w-3.5" />
-          <span>{filteredAffiliates.length} tools listed</span>
+          <span>{filteredAffiliates.length} resources listed</span>
         </div>
       </div>
 
@@ -163,9 +163,9 @@ export default function Affiliates() {
         >
           <GlowCard className="bg-[#111111] border-[#2a2a2a] p-8 max-w-2xl mx-auto text-center" glowColor="rgba(124, 58, 237, 0.15)">
             <Sparkles className="mx-auto h-8 w-8 text-violet-400 mb-4" />
-            <h3 className="text-xl font-bold text-foreground mb-2">Get Tool Discounts</h3>
+            <h3 className="text-xl font-bold text-foreground mb-2">Get Resource Discounts</h3>
             <p className="text-xs text-muted-foreground mb-6">
-              Subscribe to receive notifications when we negotiate exclusive coupon codes, pricing discounts, and release schedules for developer tools.
+              Subscribe to receive notifications when we negotiate exclusive coupon codes, pricing discounts, and release schedules for developer resources.
             </p>
 
             {status === 'success' ? (
@@ -200,7 +200,7 @@ export default function Affiliates() {
       {/* 4. Disclaimer Text at bottom */}
       <section className="text-center max-w-2xl mx-auto pt-8 border-t border-border/10">
         <p className="text-3xs text-muted-foreground leading-normal italic">
-          Disclaimer: Some of the recommendations above contain affiliate redirect links. If you make a purchase through these links, we may receive a small commission at no additional cost to you. We only recommend tools that we use in production architectures.
+          Disclaimer: Some of the recommendations above contain affiliate redirect links. If you make a purchase through these links, we may receive a small commission at no additional cost to you. We only recommend resources that we use in production architectures.
         </p>
       </section>
 

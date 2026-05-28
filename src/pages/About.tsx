@@ -29,10 +29,10 @@ export default function About() {
             Hey, I'm Sahil.
           </h1>
           <p className="text-base text-muted-foreground leading-relaxed">
-            I'm a software developer and digital product creator building tools I wish existed — resume templates that actually get you shortlisted, AI prompt kits that make content creation instant, and digital resources that save you hours of work.
+            I'm a software developer and digital product creator building resources I wish existed — resume templates that actually get you shortlisted, AI prompt kits that make content creation instant, and digital resources that save you hours of work.
           </p>
           <p className="text-base text-muted-foreground leading-relaxed">
-            I started Sunstroke Digital because I kept seeing people struggle with the same problems: resumes that looked great but got rejected by ATS systems, content creators staring at blank pages, entrepreneurs wasting money on tools that didn't deliver. So I built the solutions myself.
+            I started Sunstroke Digital because I kept seeing people struggle with the same problems: resumes that looked great but got rejected by ATS systems, content creators staring at blank pages, entrepreneurs wasting money on resources that didn't deliver. So I built the solutions myself.
           </p>
           <p className="text-base text-muted-foreground leading-relaxed">
             Every product I launch is tested, specific, and genuinely useful. No fluff. No filler.
@@ -49,7 +49,7 @@ export default function About() {
                 AI Prompt Kits
               </Badge>
               <Badge className="bg-violet-500/10 text-violet-400 border border-violet-500/20 px-3 py-1 hover:bg-violet-500/20 rounded-xl font-medium">
-                Creator Tools
+                Creator Resources
               </Badge>
             </div>
           </div>
@@ -141,7 +141,7 @@ export default function About() {
         <Cpu className="h-10 w-10 text-violet-400 mx-auto" />
         <h3 className="text-xl font-bold text-foreground">Development Philosophy</h3>
         <p className="text-xs text-muted-foreground leading-relaxed">
-          I believe code should be easy to delete, simple to debug, and heavily documented. I prefer standard vanilla solutions over complex custom abstractions. If a tool saves 2 hours but takes 10 hours to debug, it is not worth importing.
+          I believe code should be easy to delete, simple to debug, and heavily documented. I prefer standard vanilla solutions over complex custom abstractions. If a package saves 2 hours but takes 10 hours to debug, it is not worth importing.
         </p>
         <p className="text-2xs text-muted-foreground pt-4 flex items-center justify-center space-x-1">
           <span>Made with</span>
